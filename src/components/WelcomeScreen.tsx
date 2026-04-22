@@ -33,6 +33,15 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
           </p>
         </div>
 
+        <div className="flex flex-col items-center mb-8 animate-fade-in">
+          <span className="text-xs uppercase tracking-widest text-navy/50 mb-2">Presented by</span>
+          <img
+            src="/Flipp-Shopfully-IntegratedLogo.png"
+            alt="Flipp by Shopfully"
+            className="h-12 sm:h-14 w-auto"
+          />
+        </div>
+
         <div className="bg-cream backdrop-blur-sm rounded-3xl p-8 shadow-2xl mb-8 animate-slide-up border border-navy/10">
           <div className="flex items-center justify-center space-x-8 mb-8">
             <div className="flex items-center space-x-2 text-purple">

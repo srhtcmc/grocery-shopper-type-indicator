@@ -1,8 +1,23 @@
 import React, { useState } from 'react';
-import { Share2, RefreshCw, Twitter, Facebook, Linkedin, Instagram, Sparkles } from 'lucide-react';
-import { PersonalityResult } from '../types/personality';
+import { Share2, RefreshCw, Twitter, Facebook, Linkedin, Instagram, Sparkles, ExternalLink } from 'lucide-react';
+import { PersonalityId, PersonalityResult } from '../types/personality';
 import { personalityTypes } from '../data/personalityTypes';
 import { characterIllustrations } from '../data/characterIllustrations';
+
+// Theoretical max per personality: the sum of the best-scoring option's weight
+// in each question. A real user can never hit all 9 maxes simultaneously —
+// these are per-type ceilings used as percentage denominators.
+const MAX_SCORES: Record<PersonalityId, number> = {
+  ninja: 6.7,
+  optimizer: 6.5,
+  delegate: 5.7,
+  'ethical-curator': 5.5,
+  impulse: 5.3,
+  stockpiler: 5.2,
+  chaos: 4.9,
+  'brand-loyalist': 4.6,
+  'over-optimistic': 4.6,
+};
 
 interface ResultsScreenProps {
   result: PersonalityResult;
@@ -59,10 +74,12 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({ result, nickname, 
 
   const top3 = rankedScores.slice(0, 3);
   const bottom = rankedScores[rankedScores.length - 1];
-  const visibleSum = top3.reduce((sum, r) => sum + r.score, 0) + (bottom?.score ?? 0);
 
-  const toPercent = (score: number) =>
-    visibleSum > 0 ? Math.round((score / visibleSum) * 100) : 0;
+  const toPercent = (score: number, id: PersonalityId) => {
+    const max = MAX_SCORES[id];
+    if (!max) return 0;
+    return Math.max(0, Math.min(100, Math.round((Math.max(0, score) / max) * 100)));
+  };
 
   const isHidden = !!result.type.hidden;
   const illustration = characterIllustrations[result.type.id];
@@ -155,7 +172,7 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({ result, nickname, 
             <div className="space-y-2">
               {top3.map(({ type, score }) => {
                 const isWinner = type.id === result.type.id;
-                const pct = toPercent(score);
+                const pct = toPercent(score, type.id);
                 return (
                   <div key={type.id} className="flex items-center gap-3">
                     <div className="w-44 shrink-0 text-sm font-medium text-navy/80">
@@ -189,11 +206,11 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({ result, nickname, 
                   <div className="flex-1 h-3 bg-navy/10 rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all duration-500 opacity-60"
-                      style={{ width: `${Math.max(2, toPercent(bottom.score))}%`, backgroundColor: bottom.type.color }}
+                      style={{ width: `${Math.max(2, toPercent(bottom.score, bottom.type.id))}%`, backgroundColor: bottom.type.color }}
                     />
                   </div>
                   <div className="w-12 text-right text-xs tabular-nums text-navy/60">
-                    {toPercent(bottom.score)}%
+                    {toPercent(bottom.score, bottom.type.id)}%
                   </div>
                 </div>
               </>
@@ -210,6 +227,16 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({ result, nickname, 
             <Share2 className="w-5 h-5" />
             <span>Share Results</span>
           </button>
+
+          <a
+            href="https://flipp.com/flyers"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center space-x-2 px-8 py-4 bg-yellow text-navy rounded-xl font-semibold hover:bg-pink hover:text-cream transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+          >
+            <ExternalLink className="w-5 h-5" />
+            <span>Shop Smarter with Flipp</span>
+          </a>
 
           <button
             onClick={onRestart}
