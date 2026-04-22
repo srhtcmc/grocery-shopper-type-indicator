@@ -281,7 +281,11 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({ result, nickname, 
               </button>
               <button
                 onClick={() => handleCopyAndOpen('https://www.instagram.com/')}
-                className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white rounded-xl hover:opacity-90 transition-opacity"
+                style={{
+                  background:
+                    'linear-gradient(45deg, #feda75 0%, #fa7e1e 25%, #d62976 50%, #962fbf 75%, #4f5bd5 100%)',
+                }}
+                className="flex items-center space-x-2 px-6 py-3 text-white rounded-xl hover:opacity-90 transition-opacity"
               >
                 <Instagram className="w-5 h-5" />
                 <span>Instagram</span>
