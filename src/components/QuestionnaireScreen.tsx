@@ -21,7 +21,8 @@ export const QuestionnaireScreen: React.FC<QuestionnaireScreenProps> = ({
 
   const question = questions[currentQuestion];
 
-  const handleAnswer = (optionId: string) => {
+  const handleAnswer = (optionId: string, event: React.MouseEvent<HTMLButtonElement>) => {
+    event.currentTarget.blur();
     const newResponse: UserResponse = { questionId: question.id, optionId };
     const updatedResponses = responses.filter((r) => r.questionId !== question.id);
     updatedResponses.push(newResponse);
@@ -83,7 +84,7 @@ export const QuestionnaireScreen: React.FC<QuestionnaireScreenProps> = ({
               return (
                 <button
                   key={option.id}
-                  onClick={() => handleAnswer(option.id)}
+                  onClick={(e) => handleAnswer(option.id, e)}
                   className={`w-full p-4 rounded-xl text-left font-medium transition-all duration-300 transform hover:scale-[1.02] border ${
                     isSelected
                       ? 'bg-navy text-cream border-navy shadow-lg'

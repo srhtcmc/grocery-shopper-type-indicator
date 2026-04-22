@@ -412,7 +412,7 @@ export const questions: Question[] = [
   },
   {
     id: 6,
-    text: "You see a 'Buy 10 for $10' display on boxes of crackers you've been wanting to try. You:",
+    text: "You see a 'Buy 10 for $10' display on boxes of crackers you like. You:",
     options: [
       {
         id: '6a',

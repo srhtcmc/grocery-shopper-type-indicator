@@ -24,10 +24,10 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
               <ShoppingCart className="w-12 h-12 text-cream" />
             </div>
           </div>
-          <h1 className="text-6xl font-bold bg-gradient-to-r from-cyan to-purple bg-clip-text text-transparent mb-4">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-cyan to-purple bg-clip-text text-transparent mb-4">
             Grocery Shopper Type Indicator
           </h1>
-          <p className="text-xl text-navy/70 max-w-lg mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl text-navy/70 max-w-lg mx-auto leading-relaxed">
             Find out what kind of grocery shopper you really are. Nine personalities.
             One hidden type. Seven quick questions.
           </p>
