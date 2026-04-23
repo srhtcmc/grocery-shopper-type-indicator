@@ -1,23 +1,8 @@
 import React, { useState } from 'react';
 import { Share2, RefreshCw, Twitter, Facebook, Linkedin, Instagram, Sparkles, ExternalLink } from 'lucide-react';
 import { PersonalityId, PersonalityResult } from '../types/personality';
-import { personalityTypes } from '../data/personalityTypes';
+import { MAX_SCORES, personalityTypes } from '../data/personalityTypes';
 import { characterIllustrations } from '../data/characterIllustrations';
-
-// Theoretical max per personality: the sum of the best-scoring option's weight
-// in each question. A real user can never hit all 9 maxes simultaneously —
-// these are per-type ceilings used as percentage denominators.
-const MAX_SCORES: Record<PersonalityId, number> = {
-  ninja: 6.7,
-  optimizer: 6.5,
-  delegate: 5.7,
-  'ethical-curator': 5.5,
-  impulse: 5.3,
-  stockpiler: 5.2,
-  chaos: 4.9,
-  'brand-loyalist': 4.6,
-  'over-optimistic': 4.6,
-};
 
 interface ResultsScreenProps {
   result: PersonalityResult;
@@ -69,8 +54,12 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({ result, nickname, 
   };
 
   const rankedScores = personalityTypes
-    .map((type) => ({ type, score: result.scores[type.id] ?? 0 }))
-    .sort((a, b) => b.score - a.score);
+    .map((type) => {
+      const score = result.scores[type.id] ?? 0;
+      const pct = MAX_SCORES[type.id] > 0 ? score / MAX_SCORES[type.id] : 0;
+      return { type, score, pct };
+    })
+    .sort((a, b) => b.pct - a.pct);
 
   const top3 = rankedScores.slice(0, 3);
   const bottom = rankedScores[rankedScores.length - 1];

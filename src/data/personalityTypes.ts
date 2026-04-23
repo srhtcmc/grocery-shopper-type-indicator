@@ -1,4 +1,19 @@
-import { PersonalityType } from '../types/personality';
+import { PersonalityId, PersonalityType } from '../types/personality';
+
+// Theoretical max per personality: sum of the best-scoring option's weight
+// in each question. Used as the denominator for normalized "DNA" percentages
+// and for ranking (so ranking and displayed % stay in sync).
+export const MAX_SCORES: Record<PersonalityId, number> = {
+  ninja: 6.7,
+  optimizer: 6.5,
+  delegate: 5.7,
+  'ethical-curator': 5.5,
+  impulse: 5.3,
+  stockpiler: 5.2,
+  chaos: 4.9,
+  'brand-loyalist': 4.6,
+  'over-optimistic': 4.6,
+};
 
 export const personalityTypes: PersonalityType[] = [
   {

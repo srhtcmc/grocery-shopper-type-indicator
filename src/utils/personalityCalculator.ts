@@ -6,7 +6,7 @@ import {
   UserResponse,
 } from '../types/personality';
 import { questions } from '../data/questions';
-import { personalityTypes } from '../data/personalityTypes';
+import { MAX_SCORES, personalityTypes } from '../data/personalityTypes';
 
 const emptyScores = (): ScoreVector =>
   PERSONALITY_IDS.reduce((acc, id) => {
@@ -30,8 +30,11 @@ export function calculatePersonalityType(responses: UserResponse[]): Personality
     }
   }
 
+  const normalized = (id: PersonalityId) =>
+    MAX_SCORES[id] > 0 ? scores[id] / MAX_SCORES[id] : 0;
+
   const winnerId = PERSONALITY_IDS.reduce((best, id) =>
-    scores[id] > scores[best] ? id : best,
+    normalized(id) > normalized(best) ? id : best,
   );
 
   const type = personalityTypes.find((t) => t.id === winnerId);
